@@ -1,0 +1,46 @@
+import Foundation
+
+/// Rotating hero copy — benefits and personality for the home banner.
+enum TaktHeroTaglines {
+    static let all: [String] = [
+        "Stay on tempo—slide by slide.",
+        "Turn time anxiety into calm control.",
+        "Pace like a pro, not a guess.",
+        "Know when to speed up. When to breathe.",
+        "Your audience feels confident pacing.",
+        "Fewer overruns. Sharper endings.",
+        "Segment timing without staring at the clock.",
+        "Haptic nudges, zero awkward glances.",
+        "Rehearse once. Deliver with certainty.",
+        "Slide overruns? Not on our watch.",
+        "Finish strong—right on cue.",
+        "Focus on ideas—we’ll handle the clock.",
+        "Every segment gets its fair share of time.",
+        "From outline to applause, stay in rhythm.",
+        "Quiet confidence in every transition.",
+        "Less “how long left?”, more presence.",
+        "Built for speakers who respect the room.",
+        "Tempo you can feel in your hand.",
+        "Plan the arc. Trust the timer.",
+        "Make every minute intentional.",
+        "Your talk, beautifully paced.",
+        "Cue the finish—before you rush it.",
+        "Slide changes that land on time.",
+        "Energy up, pacing steady.",
+        "The simple edge serious presenters use.",
+        "Own the room—one segment at a time.",
+        "Clarity beats rushing. Takt keeps both.",
+        "Slide, breathe, advance—on rhythm.",
+        "Your story deserves a steady beat.",
+        "Cut the “uh, next slide…” energy.",
+        "Practice the arc. Deliver the polish.",
+        "Timeboxing without the stress face.",
+        "Confidence is knowing what comes next.",
+        "Less clock-watching. More connection.",
+        "Smooth handoffs between ideas.",
+        "When minutes matter, cues matter more.",
+        "A gentle squeeze when the room needs it.",
+        "Structure your talk like a playlist.",
+        "Endings people remember—not overtime."
+    ]
+}

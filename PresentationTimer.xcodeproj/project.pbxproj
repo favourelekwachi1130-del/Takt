@@ -1,0 +1,620 @@
+// !$*UTF8*$!
+archiveVersion = 1;
+classes = {
+};
+objectVersion = 56;
+objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* PresentationTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* PresentationTimerApp.swift */; };
+		A10000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* ContentView.swift */; };
+		A10000000000000000000003 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* Preset.swift */; };
+		A10000000000000000000004 /* TimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* TimerEngine.swift */; };
+		A10000000000000000000005 /* PresetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* PresetStore.swift */; };
+		A10000000000000000000006 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* HapticsService.swift */; };
+		A10000000000000000000007 /* NotificationCueScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* NotificationCueScheduler.swift */; };
+		A10000000000000000000008 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* AppSettings.swift */; };
+		A10000000000000000000009 /* CrashReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* CrashReporting.swift */; };
+		A1000000000000000000000A /* DNDGateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000A /* DNDGateView.swift */; };
+		A1000000000000000000000B /* PresetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000B /* PresetListView.swift */; };
+		A1000000000000000000000C /* PresetEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000C /* PresetEditorView.swift */; };
+		A1000000000000000000000D /* RunSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000D /* RunSessionView.swift */; };
+		A1000000000000000000000E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000E /* Assets.xcassets */; };
+		A1000000000000000000000F /* TimerEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000000F /* TimerEngineTests.swift */; };
+		A10000000000000000000010 /* PresentationEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* PresentationEnvironment.swift */; };
+		A10000000000000000000011 /* TaktTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011 /* TaktTheme.swift */; };
+		A10000000000000000000012 /* SessionStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012 /* SessionStats.swift */; };
+		A10000000000000000000013 /* MiniTimerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013 /* MiniTimerBar.swift */; };
+		A10000000000000000000014 /* TaktHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000014 /* TaktHomeView.swift */; };
+		A10000000000000000000015 /* CueSoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000015 /* CueSoundPlayer.swift */; };
+		A10000000000000000000016 /* TaktSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000016 /* TaktSettingsView.swift */; };
+		A10000000000000000000017 /* SessionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000017 /* SessionSummaryView.swift */; };
+		A10000000000000000000018 /* TaktHeroTaglines.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000018 /* TaktHeroTaglines.swift */; };
+		A10000000000000000000019 /* TaktHeroBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000019 /* TaktHeroBanner.swift */; };
+		A1000000000000000000001A /* TaktNameSetupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000001A /* TaktNameSetupSheet.swift */; };
+		A1000000000000000000001B /* TaktUserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000001B /* TaktUserSettings.swift */; };
+		A1000000000000000000001C /* AudioOutputDescriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000001C /* AudioOutputDescriber.swift */; };
+		A1000000000000000000001D /* TaktTestNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000001D /* TaktTestNotification.swift */; };
+		A1000000000000000000001E /* TaktWidgetSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000001E /* TaktWidgetSyncService.swift */; };
+		A1000000000000000000001F /* TaktAppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000000000000000000001F /* TaktAppGroup.swift */; };
+		A10000000000000000000020 /* TaktTimerActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000020 /* TaktTimerActivityAttributes.swift */; };
+		A10000000000000000000021 /* TaktAppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000021 /* TaktAppIntents.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B10000000000000000000001 /* PresentationTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTimerApp.swift; sourceTree = "<group>"; };
+		B10000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
+		B10000000000000000000004 /* TimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngine.swift; sourceTree = "<group>"; };
+		B10000000000000000000005 /* PresetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetStore.swift; sourceTree = "<group>"; };
+		B10000000000000000000006 /* HapticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsService.swift; sourceTree = "<group>"; };
+		B10000000000000000000007 /* NotificationCueScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCueScheduler.swift; sourceTree = "<group>"; };
+		B10000000000000000000008 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B10000000000000000000009 /* CrashReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashReporting.swift; sourceTree = "<group>"; };
+		B1000000000000000000000A /* DNDGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNDGateView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000B /* PresetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000C /* PresetEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetEditorView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000D /* RunSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunSessionView.swift; sourceTree = "<group>"; };
+		B1000000000000000000000E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B1000000000000000000000F /* TimerEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngineTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000010 /* PresentationEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationEnvironment.swift; sourceTree = "<group>"; };
+		B10000000000000000000011 /* TaktTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktTheme.swift; sourceTree = "<group>"; };
+		B10000000000000000000012 /* SessionStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStats.swift; sourceTree = "<group>"; };
+		B10000000000000000000013 /* MiniTimerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniTimerBar.swift; sourceTree = "<group>"; };
+		B10000000000000000000014 /* TaktHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktHomeView.swift; sourceTree = "<group>"; };
+		B10000000000000000000015 /* CueSoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueSoundPlayer.swift; sourceTree = "<group>"; };
+		B10000000000000000000016 /* TaktSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktSettingsView.swift; sourceTree = "<group>"; };
+		B10000000000000000000017 /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
+		B10000000000000000000018 /* TaktHeroTaglines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktHeroTaglines.swift; sourceTree = "<group>"; };
+		B10000000000000000000019 /* TaktHeroBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktHeroBanner.swift; sourceTree = "<group>"; };
+		B1000000000000000000001A /* TaktNameSetupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktNameSetupSheet.swift; sourceTree = "<group>"; };
+		B1000000000000000000001B /* TaktUserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktUserSettings.swift; sourceTree = "<group>"; };
+		B1000000000000000000001C /* AudioOutputDescriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOutputDescriber.swift; sourceTree = "<group>"; };
+		B1000000000000000000001D /* TaktTestNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktTestNotification.swift; sourceTree = "<group>"; };
+		B1000000000000000000001E /* TaktWidgetSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktWidgetSyncService.swift; sourceTree = "<group>"; };
+		B1000000000000000000001F /* TaktAppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktAppGroup.swift; sourceTree = "<group>"; };
+		B10000000000000000000020 /* TaktTimerActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktTimerActivityAttributes.swift; sourceTree = "<group>"; };
+		B10000000000000000000021 /* TaktAppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaktAppIntents.swift; sourceTree = "<group>"; };
+		C10000000000000000000001 /* PresentationTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PresentationTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C10000000000000000000002 /* PresentationTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PresentationTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D10000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D10000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E10000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				E10000000000000000000002 /* PresentationTimer */,
+				E10000000000000000000003 /* PresentationTimerTests */,
+				E10000000000000000000004 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E10000000000000000000002 /* PresentationTimer */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000001 /* PresentationTimerApp.swift */,
+				B10000000000000000000002 /* ContentView.swift */,
+				B10000000000000000000010 /* PresentationEnvironment.swift */,
+				E10000000000000000000005 /* Models */,
+				E10000000000000000000006 /* Engine */,
+				E10000000000000000000007 /* Services */,
+				E1000000000000000000000B /* Shared */,
+				E1000000000000000000000C /* AppIntents */,
+				E10000000000000000000008 /* Views */,
+				E10000000000000000000009 /* Theme */,
+				B1000000000000000000000E /* Assets.xcassets */,
+			);
+			path = PresentationTimer;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000009 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000011 /* TaktTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000003 /* Preset.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000006 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000004 /* TimerEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000007 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000005 /* PresetStore.swift */,
+				B10000000000000000000006 /* HapticsService.swift */,
+				B10000000000000000000007 /* NotificationCueScheduler.swift */,
+				B10000000000000000000008 /* AppSettings.swift */,
+				B10000000000000000000009 /* CrashReporting.swift */,
+				B10000000000000000000012 /* SessionStats.swift */,
+				B10000000000000000000015 /* CueSoundPlayer.swift */,
+				B1000000000000000000001B /* TaktUserSettings.swift */,
+				B1000000000000000000001C /* AudioOutputDescriber.swift */,
+				B1000000000000000000001D /* TaktTestNotification.swift */,
+				B1000000000000000000001E /* TaktWidgetSyncService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E1000000000000000000000B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B1000000000000000000001F /* TaktAppGroup.swift */,
+				B10000000000000000000020 /* TaktTimerActivityAttributes.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		E1000000000000000000000C /* AppIntents */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000000000021 /* TaktAppIntents.swift */,
+			);
+			path = AppIntents;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000008 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1000000000000000000000A /* DNDGateView.swift */,
+				B10000000000000000000014 /* TaktHomeView.swift */,
+				B1000000000000000000000B /* PresetListView.swift */,
+				B1000000000000000000000C /* PresetEditorView.swift */,
+				B1000000000000000000000D /* RunSessionView.swift */,
+				B10000000000000000000013 /* MiniTimerBar.swift */,
+				B10000000000000000000016 /* TaktSettingsView.swift */,
+				B10000000000000000000017 /* SessionSummaryView.swift */,
+				B10000000000000000000018 /* TaktHeroTaglines.swift */,
+				B10000000000000000000019 /* TaktHeroBanner.swift */,
+				B1000000000000000000001A /* TaktNameSetupSheet.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000003 /* PresentationTimerTests */ = {
+			isa = PBXGroup;
+			children = (
+				B1000000000000000000000F /* TimerEngineTests.swift */,
+			);
+			path = PresentationTimerTests;
+			sourceTree = "<group>";
+		};
+		E10000000000000000000004 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C10000000000000000000001 /* PresentationTimer.app */,
+				C10000000000000000000002 /* PresentationTimerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F10000000000000000000001 /* PresentationTimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F20000000000000000000001 /* Build configuration list for PBXNativeTarget "PresentationTimer" */;
+			buildPhases = (
+				F30000000000000000000001 /* Sources */,
+				D10000000000000000000001 /* Frameworks */,
+				F30000000000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PresentationTimer;
+			productName = PresentationTimer;
+			productReference = C10000000000000000000001 /* PresentationTimer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F10000000000000000000002 /* PresentationTimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F20000000000000000000002 /* Build configuration list for PBXNativeTarget "PresentationTimerTests" */;
+			buildPhases = (
+				F30000000000000000000003 /* Sources */,
+				D10000000000000000000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F40000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = PresentationTimerTests;
+			productName = PresentationTimerTests;
+			productReference = C10000000000000000000002 /* PresentationTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F50000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					F10000000000000000000001 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					F10000000000000000000002 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = F10000000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = F20000000000000000000003 /* Build configuration list for PBXProject "PresentationTimer" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E10000000000000000000001;
+			productRefGroup = E10000000000000000000004 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F10000000000000000000001 /* PresentationTimer */,
+				F10000000000000000000002 /* PresentationTimerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F30000000000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000000000000000000000E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F30000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* PresentationTimerApp.swift in Sources */,
+				A10000000000000000000002 /* ContentView.swift in Sources */,
+				A10000000000000000000003 /* Preset.swift in Sources */,
+				A10000000000000000000004 /* TimerEngine.swift in Sources */,
+				A10000000000000000000005 /* PresetStore.swift in Sources */,
+				A10000000000000000000006 /* HapticsService.swift in Sources */,
+				A10000000000000000000007 /* NotificationCueScheduler.swift in Sources */,
+				A10000000000000000000008 /* AppSettings.swift in Sources */,
+				A10000000000000000000009 /* CrashReporting.swift in Sources */,
+				A1000000000000000000000A /* DNDGateView.swift in Sources */,
+				A1000000000000000000000B /* PresetListView.swift in Sources */,
+				A1000000000000000000000C /* PresetEditorView.swift in Sources */,
+				A1000000000000000000000D /* RunSessionView.swift in Sources */,
+				A10000000000000000000010 /* PresentationEnvironment.swift in Sources */,
+				A10000000000000000000011 /* TaktTheme.swift in Sources */,
+				A10000000000000000000012 /* SessionStats.swift in Sources */,
+				A10000000000000000000013 /* MiniTimerBar.swift in Sources */,
+				A10000000000000000000014 /* TaktHomeView.swift in Sources */,
+				A10000000000000000000015 /* CueSoundPlayer.swift in Sources */,
+				A10000000000000000000016 /* TaktSettingsView.swift in Sources */,
+				A10000000000000000000017 /* SessionSummaryView.swift in Sources */,
+				A10000000000000000000018 /* TaktHeroTaglines.swift in Sources */,
+				A10000000000000000000019 /* TaktHeroBanner.swift in Sources */,
+				A1000000000000000000001A /* TaktNameSetupSheet.swift in Sources */,
+				A1000000000000000000001B /* TaktUserSettings.swift in Sources */,
+				A1000000000000000000001C /* AudioOutputDescriber.swift in Sources */,
+				A1000000000000000000001D /* TaktTestNotification.swift in Sources */,
+				A1000000000000000000001E /* TaktWidgetSyncService.swift in Sources */,
+				A1000000000000000000001F /* TaktAppGroup.swift in Sources */,
+				A10000000000000000000020 /* TaktTimerActivityAttributes.swift in Sources */,
+				A10000000000000000000021 /* TaktAppIntents.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F30000000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000000000000000000000F /* TimerEngineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F40000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F10000000000000000000001 /* PresentationTimer */;
+			targetProxy = F40000000000000000000002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		F40000000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F50000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F10000000000000000000001;
+			remoteInfo = PresentationTimer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+		G10000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		G10000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		G10000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Takt;
+				INFOPLIST_KEY_NSUserNotificationsUsageDescription = "Takt schedules local alerts when a segment is nearly done while the app is in the background.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.presentationtimer.PresentationTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		G10000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Takt;
+				INFOPLIST_KEY_NSUserNotificationsUsageDescription = "Takt schedules local alerts when a segment is nearly done while the app is in the background.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.presentationtimer.PresentationTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		G10000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.presentationtimer.PresentationTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PresentationTimer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PresentationTimer";
+			};
+			name = Debug;
+		};
+		G10000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.presentationtimer.PresentationTimerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PresentationTimer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PresentationTimer";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F20000000000000000000003 /* Build configuration list for PBXProject "PresentationTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				G10000000000000000000001 /* Debug */,
+				G10000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F20000000000000000000001 /* Build configuration list for PBXNativeTarget "PresentationTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				G10000000000000000000003 /* Debug */,
+				G10000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F20000000000000000000002 /* Build configuration list for PBXNativeTarget "PresentationTimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				G10000000000000000000005 /* Debug */,
+				G10000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+};
+rootObject = F50000000000000000000001 /* Project object */;
+}
