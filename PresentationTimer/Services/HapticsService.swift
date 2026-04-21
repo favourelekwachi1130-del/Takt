@@ -40,6 +40,20 @@ enum HapticsService {
         }
     }
 
+    /// Triple light taps — second pacing cue (between first cue and segment end).
+    static func playSecondCue(intensity user: TaktUserSettings.HapticIntensity = TaktUserSettings.hapticIntensity) {
+        let gen = impact(for: user)
+        let p = min(1, pulseIntensity(for: user) * 0.92)
+        gen.prepare()
+        gen.impactOccurred(intensity: p)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+            gen.impactOccurred(intensity: p * 0.95)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.16) {
+            gen.impactOccurred(intensity: p * 0.9)
+        }
+    }
+
     /// Stronger end cue for segment boundary.
     static func playSegmentEnd(intensity user: TaktUserSettings.HapticIntensity = TaktUserSettings.hapticIntensity) {
         switch user {

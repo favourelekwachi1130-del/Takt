@@ -1,8 +1,9 @@
 import Foundation
 
-/// Cues emitted by the engine (first pacing cue, end of segment, end of session).
+/// Cues emitted by the engine (two pacing cues per segment, then segment end, then session end).
 enum TimerCue: Equatable, Sendable {
-    case threeQuarter(segmentIndex: Int)
+    case firstPacing(segmentIndex: Int)
+    case secondPacing(segmentIndex: Int)
     case segmentEnd(segmentIndex: Int)
     case sessionComplete
 }
@@ -26,16 +27,19 @@ final class TimerEngine: ObservableObject {
     @Published private(set) var elapsedInCurrentSegment: TimeInterval = 0
     /// Monotonic segment durations from the active preset.
     private(set) var segments: [Segment] = []
-    /// First pacing cue threshold (e.g. 0.75 = 75% through segment).
+    /// First pacing cue threshold (fraction of segment length). From Settings.
     private(set) var firstCueFraction: Double = 0.75
+    /// Second pacing cue threshold (fraction of segment length). From Settings.
+    private(set) var secondCueFraction: Double = 0.9
     /// Wall-clock start of the current session (for summary stats).
     private(set) var sessionStartedAt: Date?
     /// Wall time spent in each completed segment (same order as `segments` indices), for rehearsal recap.
     @Published private(set) var completedSegmentActualElapsed: [TimeInterval] = []
 
     private var lastTickDate: Date?
-    /// Per-segment flags so we only fire first cue and end once per segment.
-    private var firedThreeQuarter: Set<Int> = []
+    /// Per-segment flags so each cue fires once per segment.
+    private var firedFirstPacing: Set<Int> = []
+    private var firedSecondPacing: Set<Int> = []
     private var firedEnd: Set<Int> = []
 
     var currentSegment: Segment? {
@@ -64,10 +68,11 @@ final class TimerEngine: ObservableObject {
         return now.timeIntervalSince(s)
     }
 
-    /// Loads segments and resets to idle (does not start).
+    /// Loads segments and resets to idle (does not start). Cue positions come from Settings.
     func loadPreset(_ preset: Preset) {
         stop(resetToIdle: true)
-        firstCueFraction = min(0.95, max(0.1, preset.firstCueFraction))
+        firstCueFraction = TaktUserSettings.resolvedFirstCueFraction
+        secondCueFraction = TaktUserSettings.resolvedSecondCueFraction
         segments = preset.segments.filter { $0.durationSeconds > 0 }
         if segments.isEmpty {
             runState = .idle
@@ -75,7 +80,8 @@ final class TimerEngine: ObservableObject {
         }
         currentSegmentIndex = 0
         elapsedInCurrentSegment = 0
-        firedThreeQuarter = []
+        firedFirstPacing = []
+        firedSecondPacing = []
         firedEnd = []
         lastTickDate = nil
         sessionStartedAt = nil
@@ -88,7 +94,8 @@ final class TimerEngine: ObservableObject {
         guard !segments.isEmpty else { return }
         currentSegmentIndex = 0
         elapsedInCurrentSegment = 0
-        firedThreeQuarter = []
+        firedFirstPacing = []
+        firedSecondPacing = []
         firedEnd = []
         completedSegmentActualElapsed = []
         lastTickDate = Date()
@@ -120,7 +127,8 @@ final class TimerEngine: ObservableObject {
             segments = []
             currentSegmentIndex = 0
             elapsedInCurrentSegment = 0
-            firedThreeQuarter = []
+            firedFirstPacing = []
+            firedSecondPacing = []
             firedEnd = []
             completedSegmentActualElapsed = []
         }
@@ -142,11 +150,18 @@ final class TimerEngine: ObservableObject {
 
             let duration = seg.durationSeconds
             let idx = currentSegmentIndex
-            let thresholdFirst = firstCueFraction * duration
+            let tFirst = firstCueFraction * duration
+            let tSecond = secondCueFraction * duration
+            let secondEffective = max(tSecond, tFirst + 0.001)
 
-            if elapsedInCurrentSegment >= thresholdFirst, !firedThreeQuarter.contains(idx) {
-                firedThreeQuarter.insert(idx)
-                cues.append(.threeQuarter(segmentIndex: idx))
+            if elapsedInCurrentSegment >= tFirst, !firedFirstPacing.contains(idx) {
+                firedFirstPacing.insert(idx)
+                cues.append(.firstPacing(segmentIndex: idx))
+            }
+
+            if elapsedInCurrentSegment >= secondEffective, !firedSecondPacing.contains(idx) {
+                firedSecondPacing.insert(idx)
+                cues.append(.secondPacing(segmentIndex: idx))
             }
 
             if elapsedInCurrentSegment < duration { break }
@@ -182,4 +197,3 @@ final class TimerEngine: ObservableObject {
         elapsedInCurrentSegment += delta
     }
 }
-

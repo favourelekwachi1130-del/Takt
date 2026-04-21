@@ -3,3 +3,6 @@ DerivedData/
 build/
 *.xcuserstate
 xcuserdata/
+
+# Generated Cloudflare upload bundle (run: cd WebHostingTemplate && zip -r ../takt-web.zip .)
+takt-web.zip

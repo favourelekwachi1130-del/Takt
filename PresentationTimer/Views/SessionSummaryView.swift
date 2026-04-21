@@ -54,7 +54,7 @@ struct SessionSummaryView: View {
                             summaryRow(title: "Session time", value: formatDuration(w))
                         }
                     }
-                    .taktCardStyle()
+                    .taktCardStyle(elevation: .high)
 
                     if let rows = rehearsalRows, !rows.isEmpty {
                         VStack(alignment: .leading, spacing: 10) {
@@ -85,7 +85,7 @@ struct SessionSummaryView: View {
                                 .padding(.vertical, 4)
                             }
                         }
-                        .taktCardStyle()
+                        .taktCardStyle(elevation: .mid)
                     }
 
                     shareSection
@@ -180,7 +180,9 @@ struct SessionSummaryView: View {
 
     private func deltaColor(_ d: TimeInterval) -> Color {
         if abs(d) < 2 { return TaktTheme.secondaryLabel(for: colorScheme) }
-        return d > 0 ? Color.orange : Color.green
+        // Overrun vs planned: secondary accent; underrun stays neutral (no extra accent hue).
+        if d > 0 { return TaktTheme.accentSecondary }
+        return TaktTheme.secondaryLabel(for: colorScheme)
     }
 }
 
@@ -196,7 +198,7 @@ private struct RecapShareCard: View {
             HStack {
                 Image(systemName: "timer")
                     .font(.title2.weight(.bold))
-                    .foregroundStyle(TaktTheme.ringGradient)
+                    .foregroundStyle(TaktTheme.primaryFill)
                 Spacer()
                 Text("Takt")
                     .font(.caption.weight(.heavy))
@@ -239,16 +241,7 @@ private struct RecapShareCard: View {
         }
         .padding(24)
         .frame(width: 360, height: 420, alignment: .topLeading)
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.10, green: 0.12, blue: 0.16),
-                    Color(red: 0.06, green: 0.07, blue: 0.10)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+        .background(TaktTheme.heroShareCardFill)
         .foregroundStyle(.white)
     }
 
@@ -269,7 +262,7 @@ private struct TaktSummaryDoneStyle: ButtonStyle {
             .foregroundStyle(Color.black)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(TaktTheme.ringGradient)
+                    .fill(TaktTheme.primaryFill)
                     .opacity(configuration.isPressed ? 0.88 : 1)
             )
     }

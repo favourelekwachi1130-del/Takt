@@ -58,7 +58,7 @@ private struct TaktTimerWidgetView: View {
                     .font(.caption2)
                     .lineLimit(1)
                 Spacer(minLength: 4)
-                Text(timeString(entry.snapshot.remainingSeconds))
+                timerOrStatic(entry.snapshot)
                     .font(.caption.weight(.bold).monospacedDigit())
             }
             .minimumScaleFactor(0.8)
@@ -77,7 +77,7 @@ private struct TaktTimerWidgetView: View {
                 .minimumScaleFactor(0.8)
             Spacer(minLength: 0)
             if entry.snapshot.sessionActive {
-                Text(timeString(entry.snapshot.remainingSeconds))
+                timerOrStatic(entry.snapshot)
                     .font(.title2.weight(.semibold).monospacedDigit())
                 Text(entry.snapshot.segmentTitle)
                     .font(.caption2)
@@ -92,7 +92,7 @@ private struct TaktTimerWidgetView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding()
         .containerBackground(for: .widget) {
-            Color(red: 0.08, green: 0.09, blue: 0.12)
+            Color(red: 0.09, green: 0.08, blue: 0.07)
         }
     }
 
@@ -100,5 +100,14 @@ private struct TaktTimerWidgetView: View {
         let m = sec / 60
         let s = sec % 60
         return String(format: "%d:%02d", m, s)
+    }
+
+    @ViewBuilder
+    private func timerOrStatic(_ snap: TaktTimerSnapshot) -> some View {
+        if snap.isPaused {
+            Text(timeString(snap.remainingSeconds))
+        } else {
+            Text(snap.segmentEndDate, style: .timer)
+        }
     }
 }

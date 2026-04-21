@@ -30,7 +30,7 @@ struct RunSessionView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                TaktTheme.background(for: colorScheme)
+                TaktTheme.rootBackdrop(for: colorScheme)
                     .ignoresSafeArea()
 
                 VStack(spacing: 28) {
@@ -88,7 +88,10 @@ struct RunSessionView: View {
             switch timerEngine.runState {
             case .running, .paused:
                 prelaunch = .live
-            case .idle, .completed:
+            case .completed:
+                // Session already finished — show recap UI only (Save & close). Never reload preset or restart countdown.
+                prelaunch = .live
+            case .idle:
                 timerEngine.loadPreset(preset)
                 if countdownRitualEnabled {
                     prelaunch = .countdown(3)
@@ -99,10 +102,8 @@ struct RunSessionView: View {
                 }
             }
         }
-        .onDisappear {
-            launchTask?.cancel()
-            launchTask = nil
-        }
+        // Do not cancel `launchTask` here — this also runs when minimizing (fullScreenCover dismisses).
+        // Cancelling would abort countdown / never call `start()`. Cancel only from "End talk".
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 let cues = timerEngine.tick(now: .now)
@@ -141,7 +142,7 @@ struct RunSessionView: View {
                 case .go:
                     Text("Go")
                         .font(.system(size: 96, weight: .bold, design: .rounded))
-                        .foregroundStyle(TaktTheme.ringGradient)
+                        .foregroundStyle(TaktTheme.primaryFill)
                         .shadow(color: .black.opacity(0.25), radius: 10, y: 5)
                         .transition(.scale(scale: 0.9).combined(with: .opacity))
                 case .live:
@@ -177,6 +178,10 @@ struct RunSessionView: View {
     private func beginRunningSession() {
         timerEngine.start()
         Task {
+            guard TaktUserSettings.backgroundNotificationsEnabled else {
+                notifications.cancelAll()
+                return
+            }
             _ = await notifications.requestAuthorizationIfNeeded()
             await notifications.reschedule(engine: timerEngine)
         }
@@ -184,7 +189,7 @@ struct RunSessionView: View {
 
     private var activeTimerBlock: some View {
         let phase = TaktTheme.sessionRingPhase(engine: timerEngine, preset: preset)
-        let ringGradient = TaktTheme.sessionRingGradient(for: phase)
+        let ringColor = TaktTheme.sessionRingColor(for: phase)
 
         return VStack(spacing: 20) {
             segmentTimelineStrip
@@ -220,7 +225,7 @@ struct RunSessionView: View {
                 Circle()
                     .trim(from: 0, to: timerEngine.progressInSegment)
                     .stroke(
-                        ringGradient,
+                        ringColor,
                         style: StrokeStyle(lineWidth: 14, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-90))
@@ -251,7 +256,7 @@ struct RunSessionView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
                     }
-                    .buttonStyle(TaktTimerControlStyle(filled: true, gradient: TaktTheme.ringGradient))
+                    .buttonStyle(TaktTimerControlStyle(filled: true, fillColor: TaktTheme.primaryFill))
                 } else if timerEngine.runState == .paused {
                     Button {
                         timerEngine.resume()
@@ -262,8 +267,8 @@ struct RunSessionView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 22)
                     }
-                    .buttonStyle(TaktTimerControlStyle(filled: true, gradient: ringGradient))
-                    .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.35 : 0.12), radius: 16, y: 8)
+                    .buttonStyle(TaktTimerControlStyle(filled: true, fillColor: ringColor))
+                    .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.32 : 0.12), radius: 10, y: 5)
                 }
             }
         }
@@ -271,11 +276,16 @@ struct RunSessionView: View {
 
     @ViewBuilder
     private func phaseHint(for phase: TaktTheme.SessionRingPhase) -> some View {
+        let isLastSegment = preset.segments.indices.contains(timerEngine.currentSegmentIndex)
+            && timerEngine.currentSegmentIndex >= preset.segments.count - 1
         let text: String = {
             switch phase {
             case .steady: return "In rhythm"
-            case .pacing: return "Pacing zone — first cue fired"
-            case .finalStretch: return "Home stretch — last segment"
+            case .pacing: return "Pacing zone — after first cue"
+            case .finalStretch:
+                return isLastSegment
+                    ? "Home stretch — last segment"
+                    : "Final stretch — after second cue"
             }
         }()
         Text(text)
@@ -334,7 +344,7 @@ struct RunSessionView: View {
         VStack(spacing: 20) {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 56))
-                .foregroundStyle(TaktTheme.ringGradient)
+                .foregroundStyle(TaktTheme.primaryFill)
                 .symbolRenderingMode(.hierarchical)
 
             Text("Talk complete")
@@ -388,9 +398,12 @@ struct RunSessionView: View {
         let hi = TaktUserSettings.hapticIntensity
         for cue in cues {
             switch cue {
-            case .threeQuarter:
+            case .firstPacing:
                 HapticsService.playFirstCue(intensity: hi)
                 CueSoundPlayer.playFirstCue()
+            case .secondPacing:
+                HapticsService.playSecondCue(intensity: hi)
+                CueSoundPlayer.playSecondCue()
             case .segmentEnd:
                 HapticsService.playSegmentEnd(intensity: hi)
                 CueSoundPlayer.playSegmentEnd()
@@ -405,7 +418,7 @@ struct RunSessionView: View {
 
 private struct TaktTimerControlStyle: ButtonStyle {
     var filled: Bool
-    var gradient: LinearGradient = TaktTheme.ringGradient
+    var fillColor: Color = TaktTheme.primaryFill
     @Environment(\.colorScheme) private var colorScheme
 
     func makeBody(configuration: Configuration) -> some View {
@@ -414,7 +427,7 @@ private struct TaktTimerControlStyle: ButtonStyle {
             .background {
                 if filled {
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(gradient)
+                        .fill(fillColor)
                 }
             }
             .overlay(
@@ -431,7 +444,7 @@ private struct TaktTimerDoneStyle: ButtonStyle {
             .foregroundStyle(Color.black)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(TaktTheme.ringGradient)
+                    .fill(TaktTheme.primaryFill)
                     .opacity(configuration.isPressed ? 0.88 : 1)
             )
     }

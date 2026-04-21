@@ -1,7 +1,10 @@
 import Foundation
 import SwiftUI
 
-/// Persisted counts for dashboard stats (local-only).
+/// Dashboard “completed talks” count. Stored in `UserDefaults` only (device-local).
+///
+/// iCloud Key-Value was removed here: it produced `SyncedDefaults` “No account” noise on simulators
+/// without an Apple ID and did not justify the support burden. Talk **plans** still sync via CloudKit.
 @MainActor
 final class SessionStats: ObservableObject {
     private static let completedKey = "taktCompletedPresentations"

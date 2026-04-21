@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Takt — presentation schedule</title>
+  <meta name="description" content="Open this schedule in the Takt app, or install Takt from the App Store." />
+  <!-- Replace APPSTORE_NUMERIC_ID with your numeric App Store id (App Store Connect → App Information). -->
+  <meta name="apple-itunes-app" content="app-id=APPSTORE_NUMERIC_ID" />
+  <style>
+    :root { font-family: system-ui, -apple-system, sans-serif; line-height: 1.45; color: #1a1a1a; background: #f6f4f2; }
+    body { max-width: 36rem; margin: 0 auto; padding: 1.5rem; }
+    h1 { font-size: 1.35rem; margin-bottom: 0.5rem; }
+    p { color: #444; }
+    .card { background: #fff; border-radius: 14px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,.08); margin: 1rem 0; }
+    a.btn {
+      display: inline-block; padding: 0.65rem 1.1rem; border-radius: 12px; text-decoration: none;
+      font-weight: 600; margin: 0.35rem 0.5rem 0.35rem 0;
+    }
+    a.store { background: #0071e3; color: #fff; }
+    a.open { background: #c45c26; color: #fff; }
+    code { font-size: 0.8rem; word-break: break-all; background: #eee; padding: 0.15rem 0.35rem; border-radius: 4px; }
+    footer { font-size: 0.8rem; color: #777; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Takt presentation schedule</h1>
+  <p>This link opens in the <strong>Takt</strong> app if it is installed. Otherwise, install Takt from the App Store and open the link again, or ask the sender to share it once you have the app.</p>
+
+  <div class="card">
+    <p><strong>Get Takt</strong></p>
+    <a class="btn store" id="storeLink" href="https://apps.apple.com/app/idAPPSTORE_NUMERIC_ID">Download on the App Store</a>
+  </div>
+
+  <div class="card">
+    <p><strong>Already have Takt?</strong> Use the same link — iOS will hand off to the app when Universal Links are configured for <code>takt-app.org</code>.</p>
+    <a class="btn open" id="openLink" href="#">Open link again</a>
+  </div>
+
+  <p>Payload preview (for debugging): <code id="payloadHint">—</code></p>
+
+  <footer>takt-app.org · Takt presentation timer</footer>
+
+  <script>
+    (function () {
+      var q = new URLSearchParams(window.location.search);
+      var p = q.get('p');
+      var full = window.location.href;
+      document.getElementById('openLink').href = full;
+      document.getElementById('payloadHint').textContent = p ? (p.slice(0, 48) + (p.length > 48 ? '…' : '')) : '(no p parameter)';
+      if (!p) {
+        document.getElementById('payloadHint').textContent = '(no schedule in URL — use a shared Takt link)';
+      }
+    })();
+  </script>
+</body>
+</html>

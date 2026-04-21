@@ -45,47 +45,62 @@ struct TaktHeroBanner: View {
 
     private var taglines: [String] { TaktHeroTaglines.all }
 
+    private var heroPrimaryText: Color {
+        colorScheme == .dark ? .white : Color(red: 0.11, green: 0.10, blue: 0.10)
+    }
+
+    private var heroSecondaryText: Color {
+        colorScheme == .dark ? Color.white.opacity(0.74) : Color.black.opacity(0.52)
+    }
+
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            // Decorative “bubbles”
-            GeometryReader { geo in
-                Circle()
-                    .fill(Color.white.opacity(0.06))
-                    .frame(width: 120, height: 120)
-                    .offset(x: geo.size.width * 0.55, y: -20)
-                    .blur(radius: 1)
-                Circle()
-                    .fill(TaktTheme.accent.opacity(0.15))
-                    .frame(width: 80, height: 80)
-                    .offset(x: geo.size.width * 0.72, y: 40)
-            }
-            .allowsHitTesting(false)
-
             RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .fill(TaktTheme.heroGradient)
-                .frame(minHeight: 168)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 28, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    TaktTheme.accent.opacity(colorScheme == .dark ? 0.4 : 0.2),
+                                    TaktTheme.accent.opacity(0.06)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                )
                 .overlay(
                     RoundedRectangle(cornerRadius: 28, style: .continuous)
                         .stroke(
                             LinearGradient(
-                                colors: [Color.white.opacity(0.22), Color.white.opacity(0.06)],
+                                colors: [
+                                    Color.white.opacity(colorScheme == .dark ? 0.22 : 0.65),
+                                    Color.white.opacity(colorScheme == .dark ? 0.06 : 0.2)
+                                ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
-                        ),
+                            ),
                             lineWidth: 1
                         )
                 )
-                .shadow(color: TaktTheme.accent.opacity(colorScheme == .dark ? 0.35 : 0.2), radius: 24, y: 12)
+                .frame(minHeight: 168)
+                .shadow(color: Color.black.opacity(colorScheme == .dark ? 0.45 : 0.14), radius: 8, x: 0, y: 5)
 
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 12) {
                 Text(greetingLine)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color.white.opacity(0.92))
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .foregroundStyle(heroPrimaryText)
+                    .lineLimit(2)
+                    .minimumScaleFactor(1.0)
+                    .multilineTextAlignment(.leading)
+                    .frame(minHeight: 84, alignment: .topLeading)
+                    .layoutPriority(1)
 
                 ZStack(alignment: .leading) {
                     Text(taglines[taglineIndex])
                         .font(.title3.weight(.bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(heroPrimaryText)
                         .multilineTextAlignment(.leading)
                         .lineLimit(3)
                         .minimumScaleFactor(0.82)
@@ -108,7 +123,7 @@ struct TaktHeroBanner: View {
 
                 Text("Pacing cues · haptics · segment flow")
                     .font(.caption.weight(.medium))
-                    .foregroundStyle(Color.white.opacity(0.72))
+                    .foregroundStyle(heroSecondaryText)
             }
             .padding(22)
         }

@@ -1,0 +1,94 @@
+Deploy takt-app.org on Cloudflare (Pages) — step by step
+=========================================================
+
+Assumptions: takt-app.org is already in your Cloudflare account (DNS tab exists).
+You are only publishing static files (no server to buy).
+
+------------------------------------------------------------
+A) Edit files once (before upload)
+------------------------------------------------------------
+
+1) .well-known/apple-app-site-association
+   - Replace TEAM_ID with your Apple Developer Team ID (10 characters).
+     Xcode: select the app target → Signing & Capabilities → Team (hover or Apple ID details).
+     Or: developer.apple.com → Account → Membership → Team ID.
+
+2) import/index.html
+   - Replace APPSTORE_NUMERIC_ID in BOTH places (meta tag + href on the App Store button).
+     App Store Connect → your app → App Information → Apple ID (numeric).
+
+------------------------------------------------------------
+B) Create a Cloudflare Pages project
+------------------------------------------------------------
+
+Option 1 — Dashboard upload (fastest first time)
+  1. Cloudflare dashboard → Workers & Pages → Create → Pages → “Upload assets”.
+  2. Zip the folder contents so the zip ROOT contains _headers, _redirects, import/, .well-known/
+     (Finder often omits hidden folders; use Terminal from the parent of WebHostingTemplate):
+       cd WebHostingTemplate && zip -r ../takt-web.zip .
+  3. Upload takt-web.zip. Name the project e.g. takt-web.
+  4. Deploy. You get a URL like https://takt-web.pages.dev — test it.
+
+Option 2 — Git (good for updates)
+  1. Put this WebHostingTemplate folder in a Git repo (or make it the repo root).
+  2. Cloudflare → Workers & Pages → Create → Connect to Git.
+  3. Build settings:
+       Framework preset: None
+       Build command: (empty)
+       Build output directory: /  OR the folder name if the repo root is not the template
+     (If the repo root IS WebHostingTemplate, output directory is “/” or “.” per CF UI.)
+  4. Save and deploy.
+
+------------------------------------------------------------
+C) Attach your real domain (takt-app.org)
+------------------------------------------------------------
+
+1. In the Pages project → Custom domains → Set up a domain.
+2. Enter: takt-app.org
+3. Cloudflare will add the DNS records for you if the zone is already on Cloudflare.
+   - Apex: often CNAME flattening to your *.pages.dev hostname.
+4. Wait until SSL shows “Active” (usually minutes).
+
+Optional: add www.takt-app.org the same way, then add a redirect rule:
+  Rules → Redirect Rules → e.g. “If hostname equals www.takt-app.org → redirect to https://takt-app.org/$1”
+  (So shared links stay on the apex you use in the app.)
+
+------------------------------------------------------------
+D) Verify (do not skip)
+------------------------------------------------------------
+
+In Terminal:
+
+  curl -sI "https://takt-app.org/.well-known/apple-app-site-association"
+
+You should see:
+  HTTP/2 200
+  content-type: application/json   (or includes application/json)
+
+  curl -s "https://takt-app.org/.well-known/apple-app-site-association" | head
+
+Should print JSON starting with { "applinks"
+
+Open in a browser:
+  https://takt-app.org/import/
+  https://takt-app.org/import?p=test
+  (After _redirects: /import should 308 to /import/ and preserve query string on the landing page.)
+
+Apple’s CDN caches AASA; after you change it, validation can take a short time.
+
+------------------------------------------------------------
+E) iOS app checklist (already in your Xcode project)
+------------------------------------------------------------
+
+- Associated Domains: applinks:takt-app.org (and www if you use it).
+- Install a build on device, paste a real share link from the app in Notes, tap it:
+  - With app installed → should open Takt and import.
+  - Without app → Safari opens fallback page → App Store link.
+
+------------------------------------------------------------
+F) If AASA content-type is wrong
+------------------------------------------------------------
+
+The _headers file in this folder sets Content-Type for the AASA path on Pages.
+If you ever host elsewhere, mirror that header or use Transform Rules in Cloudflare
+to set Content-Type: application/json for that exact path.

@@ -14,7 +14,7 @@ struct TaktTimerLiveActivityWidget: Widget {
                         .lineLimit(1)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text(taktFormatTime(context.state.remainingSeconds))
+                    islandTimerText(context.state)
                         .font(.title3.weight(.bold).monospacedDigit())
                 }
                 DynamicIslandExpandedRegion(.bottom) {
@@ -24,13 +24,27 @@ struct TaktTimerLiveActivityWidget: Widget {
                 }
             } compactLeading: {
                 Image(systemName: "timer")
+                    .font(.caption.weight(.semibold))
+                    .symbolRenderingMode(.hierarchical)
             } compactTrailing: {
-                Text(taktFormatTime(context.state.remainingSeconds))
+                islandTimerText(context.state)
                     .font(.caption2.weight(.bold).monospacedDigit())
             } minimal: {
-                Image(systemName: "timer")
+                islandTimerText(context.state)
+                    .font(.caption2.weight(.bold).monospacedDigit())
+                    .minimumScaleFactor(0.75)
             }
         }
+    }
+}
+
+/// Uses `Text(_, style: .timer)` while running so the Island tracks wall time between app pushes; static when paused.
+@ViewBuilder
+private func islandTimerText(_ state: TaktTimerAttributes.ContentState) -> some View {
+    if state.isPaused {
+        Text(taktFormatTime(state.remainingSeconds))
+    } else {
+        Text(state.segmentEndDate, style: .timer)
     }
 }
 
@@ -60,9 +74,15 @@ private struct TaktLiveActivityLockView: View {
             }
             Spacer(minLength: 0)
             VStack(alignment: .trailing, spacing: 4) {
-                Text(taktFormatTime(state.remainingSeconds))
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .monospacedDigit()
+                Group {
+                    if state.isPaused {
+                        Text(taktFormatTime(state.remainingSeconds))
+                    } else {
+                        Text(state.segmentEndDate, style: .timer)
+                    }
+                }
+                .font(.system(size: 34, weight: .bold, design: .rounded))
+                .monospacedDigit()
                 if state.isPaused {
                     Text("Paused")
                         .font(.caption.weight(.semibold))
@@ -72,6 +92,6 @@ private struct TaktLiveActivityLockView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .activityBackgroundTint(Color(red: 0.08, green: 0.09, blue: 0.12))
+        .activityBackgroundTint(Color(red: 0.09, green: 0.08, blue: 0.07))
     }
 }

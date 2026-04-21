@@ -21,6 +21,8 @@ public struct TaktTimerSnapshot: Codable, Sendable, Hashable {
     public var presetName: String
     public var segmentTitle: String
     public var remainingSeconds: Int
+    /// Wall-clock instant when the current segment ends; drives Live Activity / Dynamic Island `Text(.timer)` between app updates.
+    public var segmentEndDate: Date
     public var segmentIndex: Int
     public var segmentCount: Int
     public var isPaused: Bool
@@ -33,6 +35,7 @@ public struct TaktTimerSnapshot: Codable, Sendable, Hashable {
         presetName: "Takt",
         segmentTitle: "Open the app",
         remainingSeconds: 0,
+        segmentEndDate: .now,
         segmentIndex: 0,
         segmentCount: 0,
         isPaused: false
@@ -44,6 +47,7 @@ public struct TaktTimerSnapshot: Codable, Sendable, Hashable {
         presetName: String,
         segmentTitle: String,
         remainingSeconds: Int,
+        segmentEndDate: Date,
         segmentIndex: Int,
         segmentCount: Int,
         isPaused: Bool
@@ -53,9 +57,45 @@ public struct TaktTimerSnapshot: Codable, Sendable, Hashable {
         self.presetName = presetName
         self.segmentTitle = segmentTitle
         self.remainingSeconds = remainingSeconds
+        self.segmentEndDate = segmentEndDate
         self.segmentIndex = segmentIndex
         self.segmentCount = segmentCount
         self.isPaused = isPaused
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case updatedAt, sessionActive, presetName, segmentTitle, remainingSeconds, segmentEndDate
+        case segmentIndex, segmentCount, isPaused
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        updatedAt = try c.decode(Date.self, forKey: .updatedAt)
+        sessionActive = try c.decode(Bool.self, forKey: .sessionActive)
+        presetName = try c.decode(String.self, forKey: .presetName)
+        segmentTitle = try c.decode(String.self, forKey: .segmentTitle)
+        remainingSeconds = try c.decode(Int.self, forKey: .remainingSeconds)
+        segmentIndex = try c.decode(Int.self, forKey: .segmentIndex)
+        segmentCount = try c.decode(Int.self, forKey: .segmentCount)
+        isPaused = try c.decode(Bool.self, forKey: .isPaused)
+        if let end = try c.decodeIfPresent(Date.self, forKey: .segmentEndDate) {
+            segmentEndDate = end
+        } else {
+            segmentEndDate = Date().addingTimeInterval(TimeInterval(remainingSeconds))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(updatedAt, forKey: .updatedAt)
+        try c.encode(sessionActive, forKey: .sessionActive)
+        try c.encode(presetName, forKey: .presetName)
+        try c.encode(segmentTitle, forKey: .segmentTitle)
+        try c.encode(remainingSeconds, forKey: .remainingSeconds)
+        try c.encode(segmentEndDate, forKey: .segmentEndDate)
+        try c.encode(segmentIndex, forKey: .segmentIndex)
+        try c.encode(segmentCount, forKey: .segmentCount)
+        try c.encode(isPaused, forKey: .isPaused)
     }
 
     public func save() {
@@ -91,6 +131,8 @@ public struct TaktTimerAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable, Sendable {
         public var segmentTitle: String
         public var remainingSeconds: Int
+        /// Target end time for the current segment; used with `Text(_, style: .timer)` on Dynamic Island / lock screen.
+        public var segmentEndDate: Date
         public var segmentIndex: Int
         public var segmentCount: Int
         public var isPaused: Bool
@@ -98,12 +140,14 @@ public struct TaktTimerAttributes: ActivityAttributes {
         public init(
             segmentTitle: String,
             remainingSeconds: Int,
+            segmentEndDate: Date,
             segmentIndex: Int,
             segmentCount: Int,
             isPaused: Bool
         ) {
             self.segmentTitle = segmentTitle
             self.remainingSeconds = remainingSeconds
+            self.segmentEndDate = segmentEndDate
             self.segmentIndex = segmentIndex
             self.segmentCount = segmentCount
             self.isPaused = isPaused
@@ -122,6 +166,7 @@ public extension TaktTimerSnapshot {
         TaktTimerAttributes.ContentState(
             segmentTitle: segmentTitle,
             remainingSeconds: remainingSeconds,
+            segmentEndDate: segmentEndDate,
             segmentIndex: segmentIndex,
             segmentCount: segmentCount,
             isPaused: isPaused

@@ -26,9 +26,10 @@ final class NotificationCueScheduler {
         center.removePendingNotificationRequests(withIdentifiers: [Self.nextCueId])
     }
 
-    /// Schedules one pending notification for the nearest future cue (75% or segment end) from current engine state.
+    /// Schedules one pending notification for the nearest future cue (first pacing, second pacing, or segment end).
     func reschedule(engine: TimerEngine) async {
         cancelAll()
+        guard TaktUserSettings.backgroundNotificationsEnabled else { return }
         guard engine.runState == .running else { return }
 
         let segments = engine.segments
@@ -39,40 +40,42 @@ final class NotificationCueScheduler {
         let d = seg.durationSeconds
         let elapsed = engine.elapsedInCurrentSegment
 
-        let to75 = max(0, 0.75 * d - elapsed)
-        let toEnd = max(0, d - elapsed)
+        let f1 = engine.firstCueFraction * d
+        let f2 = engine.secondCueFraction * d
 
-        let nextInterval: TimeInterval?
-        let isThreeQuarter: Bool
-
-        if to75 > 0, toEnd > 0 {
-            if to75 < toEnd {
-                nextInterval = to75
-                isThreeQuarter = true
-            } else {
-                nextInterval = toEnd
-                isThreeQuarter = false
-            }
-        } else if to75 > 0 {
-            nextInterval = to75
-            isThreeQuarter = true
-        } else if toEnd > 0 {
-            nextInterval = toEnd
-            isThreeQuarter = false
-        } else {
-            nextInterval = nil
-            isThreeQuarter = false
+        enum NextKind {
+            case firstPacing
+            case secondPacing
+            case segmentEnd
         }
 
-        guard let interval = nextInterval, interval > 0.5 else {
+        var candidates: [(TimeInterval, NextKind)] = []
+
+        if elapsed < f1 - 0.01 {
+            candidates.append((max(0, f1 - elapsed), .firstPacing))
+        }
+        if f2 > f1 + 0.01, elapsed < f2 - 0.01 {
+            candidates.append((max(0, f2 - elapsed), .secondPacing))
+        }
+        if elapsed < d - 0.01 {
+            candidates.append((max(0, d - elapsed), .segmentEnd))
+        }
+
+        guard let best = candidates.filter({ $0.0 > 0.5 }).min(by: { $0.0 < $1.0 }) else {
             return
         }
 
+        let interval = best.0
+        let kind = best.1
+
         let content = UNMutableNotificationContent()
         content.title = seg.title
-        if isThreeQuarter {
-            content.body = "About three-quarters through this segment."
-        } else {
+        switch kind {
+        case .firstPacing:
+            content.body = "First pacing cue — first stretch of this segment is done."
+        case .secondPacing:
+            content.body = "Second pacing cue — almost at the end of this segment."
+        case .segmentEnd:
             content.body = "Segment time is ending."
         }
         content.sound = .default

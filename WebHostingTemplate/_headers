@@ -1,0 +1,4 @@
+# Cloudflare Pages — Apple expects application/json for the AASA file.
+/.well-known/apple-app-site-association
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600

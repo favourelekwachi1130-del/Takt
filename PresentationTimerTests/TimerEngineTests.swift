@@ -2,6 +2,20 @@ import XCTest
 @testable import PresentationTimer
 
 final class TimerEngineTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        let d = UserDefaults.standard
+        d.set(0.75, forKey: TaktUserSettings.firstCueFractionKey)
+        d.set(0.9, forKey: TaktUserSettings.secondCueFractionKey)
+    }
+
+    override func tearDown() {
+        let d = UserDefaults.standard
+        d.removeObject(forKey: TaktUserSettings.firstCueFractionKey)
+        d.removeObject(forKey: TaktUserSettings.secondCueFractionKey)
+        super.tearDown()
+    }
+
     func testStartAndProgress() {
         let engine = TimerEngine()
         let preset = Preset(name: "T", segments: [Segment(title: "A", durationSeconds: 100)])
@@ -15,16 +29,18 @@ final class TimerEngineTests: XCTestCase {
     }
 
     func testFirstCueAtHalfSegment() {
+        UserDefaults.standard.set(0.5, forKey: TaktUserSettings.firstCueFractionKey)
+        UserDefaults.standard.set(0.85, forKey: TaktUserSettings.secondCueFractionKey)
         let engine = TimerEngine()
-        let preset = Preset(name: "T", segments: [Segment(title: "A", durationSeconds: 100)], firstCueFraction: 0.5)
+        let preset = Preset(name: "T", segments: [Segment(title: "A", durationSeconds: 100)])
         engine.loadPreset(preset)
         engine.start()
         let t0 = Date()
         let cues = engine.tick(now: t0.addingTimeInterval(51))
-        XCTAssertTrue(cues.contains(.threeQuarter(segmentIndex: 0)))
+        XCTAssertTrue(cues.contains(.firstPacing(segmentIndex: 0)))
     }
 
-    func testThreeQuarterCue() {
+    func testFirstCueDefaultTiming() {
         let engine = TimerEngine()
         let preset = Preset(name: "T", segments: [Segment(title: "A", durationSeconds: 100)])
         engine.loadPreset(preset)
@@ -32,12 +48,23 @@ final class TimerEngineTests: XCTestCase {
         let t0 = Date()
         let cues = engine.tick(now: t0.addingTimeInterval(76))
         let kinds = cues.compactMap { c -> String? in
-            if case .threeQuarter = c { return "q" }
+            if case .firstPacing = c { return "f" }
+            if case .secondPacing = c { return "s" }
             if case .segmentEnd = c { return "e" }
-            if case .sessionComplete = c { return "s" }
+            if case .sessionComplete = c { return "c" }
             return nil
         }
-        XCTAssertTrue(kinds.contains("q"))
+        XCTAssertTrue(kinds.contains("f"))
+    }
+
+    func testSecondCueFires() {
+        let engine = TimerEngine()
+        let preset = Preset(name: "T", segments: [Segment(title: "A", durationSeconds: 100)])
+        engine.loadPreset(preset)
+        engine.start()
+        let t0 = Date()
+        let cues = engine.tick(now: t0.addingTimeInterval(91))
+        XCTAssertTrue(cues.contains(.secondPacing(segmentIndex: 0)))
     }
 
     func testSegmentEndAndSessionComplete() {
@@ -66,7 +93,6 @@ final class TimerEngineTests: XCTestCase {
         let t0 = Date()
         _ = engine.tick(now: t0.addingTimeInterval(25))
         XCTAssertEqual(engine.currentSegmentIndex, 1)
-        // 25s total: 10s on first segment, 15s elapsed on second.
         XCTAssertEqual(engine.elapsedInCurrentSegment, 15, accuracy: 0.05)
         XCTAssertEqual(engine.runState, .running)
     }
@@ -112,4 +138,3 @@ final class TimerEngineTests: XCTestCase {
         XCTAssertEqual(engine.currentSegmentIndex, 1)
     }
 }
-

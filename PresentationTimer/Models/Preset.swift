@@ -43,7 +43,7 @@ struct Preset: Codable, Equatable, Hashable, Identifiable, Sendable {
     var name: String
     var segments: [Segment]
     var createdAt: Date
-    /// Fraction of each segment (0.1...0.95) at which the first pacing cue fires. Default 0.75.
+    /// Legacy field kept for JSON compatibility. Live sessions use cue timing from **Settings**.
     var firstCueFraction: Double
 
     init(

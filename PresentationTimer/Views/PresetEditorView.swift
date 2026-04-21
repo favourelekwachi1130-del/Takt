@@ -2,12 +2,11 @@ import SwiftUI
 
 struct PresetEditorView: View {
     @EnvironmentObject private var presetStore: PresetStore
-    @EnvironmentObject private var timerEngine: TimerEngine
+    @Environment(\.taktLaunchPresentation) private var launchPresentation
 
     @State private var preset: Preset
-    @State private var showDNDGate = false
-    @State private var showRunCover = false
-    @State private var runningPreset: Preset?
+    /// At most one segment row shows the wheel timer at a time.
+    @State private var expandedSegmentId: UUID?
 
     init(preset: Preset) {
         _preset = State(initialValue: preset)
@@ -24,21 +23,36 @@ struct PresetEditorView: View {
 
             Section("Segments") {
                 ForEach($preset.segments) { $seg in
-                    VStack(alignment: .leading, spacing: 8) {
-                        TextField("Title", text: $seg.title)
-                        Stepper(
-                            value: $seg.durationSeconds,
-                            in: 15...7200,
-                            step: 15
-                        ) {
-                            Text(durationLabel(seg.durationSeconds))
+                    SegmentEditorRow(
+                        segment: $seg,
+                        isTimingExpanded: expandedSegmentId == seg.id,
+                        onToggleTiming: {
+                            if expandedSegmentId == seg.id {
+                                expandedSegmentId = nil
+                            } else {
+                                expandedSegmentId = seg.id
+                            }
                         }
-                    }
+                    )
                 }
-                .onDelete { preset.segments.remove(atOffsets: $0) }
+                .onDelete { offsets in
+                    let removed = offsets.map { preset.segments[$0].id }
+                    if let ex = expandedSegmentId, removed.contains(ex) {
+                        expandedSegmentId = nil
+                    }
+                    preset.segments.remove(atOffsets: offsets)
+                }
 
                 Button("Add segment") {
                     preset.segments.append(Segment(title: "Slide \(preset.segments.count + 1)", durationSeconds: 180))
+                }
+            }
+
+            Section("Timeline") {
+                NavigationLink {
+                    PresetGanttTimelineView(preset: preset)
+                } label: {
+                    Label("Gantt chart", systemImage: "chart.bar.doc.horizontal")
                 }
             }
 
@@ -58,13 +72,25 @@ struct PresetEditorView: View {
                     presetStore.upsert(preset)
                 }
             }
-            ToolbarItem(placement: .primaryAction) {
-                if let data = try? presetStore.exportData(for: preset) {
+            ToolbarItemGroup(placement: .primaryAction) {
+                if let url = try? TaktPresetURL.shareURL(for: preset) {
                     ShareLink(
-                        item: data,
-                        preview: SharePreview(preset.name, image: Image(systemName: "doc"))
+                        item: url,
+                        subject: Text(preset.name),
+                        message: Text("Opens in Takt if installed (takt-app.org). Otherwise use the App Store page for Takt, then open the link again."),
+                        preview: SharePreview(preset.name, image: Image(systemName: "link"))
                     ) {
-                        Label("Export JSON", systemImage: "square.and.arrow.up")
+                        Label("Plan link", systemImage: "link")
+                    }
+                }
+                if let jsonURL = try? presetStore.exportJSONFileURL(for: preset) {
+                    ShareLink(
+                        item: TaktSharedJSONFile(url: jsonURL),
+                        subject: Text(preset.name),
+                        message: Text("Takt preset (JSON)."),
+                        preview: SharePreview("\(preset.name).json", image: Image(systemName: "doc.text"))
+                    ) {
+                        Label("JSON", systemImage: "doc.text")
                     }
                 }
             }
@@ -72,46 +98,12 @@ struct PresetEditorView: View {
         .onDisappear {
             presetStore.upsert(preset)
         }
-        .sheet(isPresented: $showDNDGate) {
-            DNDGateView(isPresented: $showDNDGate) {
-                guard let p = runningPreset else { return }
-                timerEngine.loadPreset(p)
-                showRunCover = true
-            }
-        }
-        .fullScreenCover(isPresented: $showRunCover, onDismiss: {
-            runningPreset = nil
-        }) {
-            if let p = runningPreset {
-                RunSessionView(
-                    preset: p,
-                    onMinimize: { showRunCover = false },
-                    onEnd: {
-                        showRunCover = false
-                        runningPreset = nil
-                    },
-                    onRecordCompletion: {}
-                )
-            }
-        }
     }
 
+    /// Same global session as Home / Plans (`ContentView` owns mini bar + Live Activity).
     private func beginRun() {
         guard !preset.segments.isEmpty else { return }
-        runningPreset = preset
-        if AppSettings.skipDNDPrompt {
-            timerEngine.loadPreset(preset)
-            showRunCover = true
-        } else {
-            showDNDGate = true
-        }
-    }
-
-    private func durationLabel(_ s: TimeInterval) -> String {
-        let m = Int(s) / 60
-        let r = Int(s) % 60
-        if r == 0 { return "\(m) min" }
-        return "\(m)m \(r)s"
+        launchPresentation?(preset)
     }
 }
 
